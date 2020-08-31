@@ -1,12 +1,10 @@
 import React from "react";
-// import { withRouter, Redirect } from "react-router";
 // import { AuthContext } from "./../Auth.js";
 import { NavLink } from 'react-router-dom';
 
 const Login = () => {
 
   return (
-    <div className='login-page'>
     <div className='login'>
       <h1 className='main-blue'>Login</h1>
       <form className='login-form'>
@@ -17,7 +15,6 @@ const Login = () => {
         <button type="submit">Login</button>
         <p>Don't have an account? <NavLink className='main-blue' to='/signup'>Signup</NavLink></p>
       </form>
-    </div>
     </div>
   );
 };

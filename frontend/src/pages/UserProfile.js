@@ -1,12 +1,12 @@
 import React from 'react';
 import './styles.css';
 
-const Home = () => {
+const UserProfile = () => {
   return (
     <div className='main'>
-      <h1>Welcome to the Group Delivery app!</h1>
+      <h1>Welcome to your user profile!</h1>
     </div>
   );
 }
 
-export default Home;
+export default UserProfile;

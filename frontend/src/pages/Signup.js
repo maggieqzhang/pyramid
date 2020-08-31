@@ -1,5 +1,4 @@
 import React from "react";
-import { withRouter } from "react-router";
 import { NavLink } from 'react-router-dom';
 
 const SignUp = () => {
@@ -23,4 +22,4 @@ const SignUp = () => {
   );
 };
 
-export default withRouter(SignUp);
+export default SignUp;
