@@ -6,6 +6,12 @@ from wtforms.validators import DataRequired, EqualTo, Length
 
 
 class RegisterForm(FlaskForm):
+    first = TextField(
+        'First Name', validators=[DataRequired(), Length(min=1, max=25)]
+    )
+    last = TextField(
+        'Last Name', validators=[DataRequired(), Length(min=1, max=25)]
+    )
     name = TextField(
         'Username', validators=[DataRequired(), Length(min=6, max=25)]
     )
@@ -24,11 +30,13 @@ class RegisterForm(FlaskForm):
 
 
 class LoginForm(FlaskForm):
-    name = TextField('Username', [DataRequired()])
+    username = TextField('Username', [DataRequired()])
     password = PasswordField('Password', [DataRequired()])
+    submit = SubmitField('Login')
 
 
 class ForgotForm(FlaskForm):
     email = TextField(
         'Email', validators=[DataRequired(), Length(min=6, max=40)]
     )
+    submit = SubmitField('Submit')

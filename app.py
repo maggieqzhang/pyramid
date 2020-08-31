@@ -28,23 +28,44 @@ def checkLoggedIn():
 @app.route('/')
 @app.route('/index')
 def index():
-    if 'username' in session:
-        return 'You are logged in as ' + session['username']
+    #if 'username' in session:
+    #    return 'You are logged in as ' + session['username']
 
     return render_template('pages/home.html')
 
 @app.route('/login', methods=['GET','POST'])
 def login():
 
-    users = mongo.db.users
-    login_user = users.find_one({'username' : request.form['username']})
+    form = forms.LoginForm(request.form)
 
-    if login_user:
-        if bcrypt.hashpw(request.form['pass'].encode('utf-8'), login_user['password']) == login_user['password']:
-            session['username'] = request.form['username']
-            return redirect(url_for('index'))
+    if 'username' in session:
+        return render_template('pages/alreadyloggedin.html')
 
-    return 'Invalid username/password combination'
+    if request.method == 'POST' and form.validate():
+        users = mongo.db.users
+        login_user = users.find_one({'username' : request.form['username']})
+
+        if login_user:
+            if bcrypt.hashpw(request.form['password'].encode('utf-8'), login_user['password']) == login_user['password']:
+                session['username'] = request.form['username']
+                return redirect(url_for('index'))
+
+        return 'Invalid username/password combination'
+    
+    return render_template('forms/login.html',form=form)
+
+
+@app.route('/logout',methods=['GET'])
+def logout():
+    if 'username' in session:
+        session.pop('username')
+    return redirect(url_for('index'))
+
+
+@app.route('/forgot',methods=['GET'])
+def forgot():
+    return redirect(url_for('index'))
+
 
 
 @app.route('/about')
@@ -68,7 +89,8 @@ def register():
         if existing_user is None:
             
             hashpass = bcrypt.hashpw(request.form['password'].encode('utf-8'), bcrypt.gensalt())
-            users.insert({'username' : request.form['name'], 'password' : hashpass, 'orders':[], 'email':request.form['email']})
+            users.insert({'username' : request.form['name'], 'password' : hashpass, 'orders':[],
+             'email':request.form['email'], 'firstname':request.form['first'],'lastname':request.form['last']})
             session['username'] = request.form['name']
             return redirect(url_for('index'))
         
