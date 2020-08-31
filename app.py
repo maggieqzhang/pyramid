@@ -28,18 +28,17 @@ def checkLoggedIn():
 @app.route('/')
 @app.route('/index')
 def index():
-    #if 'username' in session:
-    #    return 'You are logged in as ' + session['username']
+    if 'username' in session:
+        return render_template('pages/status.html', status="You are logged in as "+session['username'])
 
     return render_template('pages/home.html')
 
 @app.route('/login', methods=['GET','POST'])
 def login():
-
     form = forms.LoginForm(request.form)
 
     if 'username' in session:
-        return render_template('pages/alreadyloggedin.html')
+        return render_template('pages/status.html', status="You are already logged in")
 
     if request.method == 'POST' and form.validate():
         users = mongo.db.users
@@ -50,7 +49,7 @@ def login():
                 session['username'] = request.form['username']
                 return redirect(url_for('index'))
 
-        return 'Invalid username/password combination'
+        return render_template('pages/status.html', status="Invalid username or password")
     
     return render_template('forms/login.html',form=form)
 
@@ -59,7 +58,8 @@ def login():
 def logout():
     if 'username' in session:
         session.pop('username')
-    return redirect(url_for('index'))
+        return render_template('pages/status.html', status="You have logged out")
+    return render_template('pages/status.html', status="You are not logged in")
 
 
 @app.route('/forgot',methods=['GET'])
@@ -67,12 +67,9 @@ def forgot():
     return redirect(url_for('index'))
 
 
-
 @app.route('/about')
 def about():
     return render_template('pages/placeholder.about.html')
-
-
 
 
 @app.route('/register', methods=['POST', 'GET'])
@@ -94,7 +91,7 @@ def register():
             session['username'] = request.form['name']
             return redirect(url_for('index'))
         
-        return 'That username already exists!'
+        return render_template('pages/status.html', status="That username already exists.")
 
     return render_template('forms/register.html',form=form)
 
@@ -106,9 +103,6 @@ def profile():
     user.pop('password')
     return json_util.dumps({'user':user})
     
-
-
-
 
 
 
