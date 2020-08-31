@@ -1,12 +1,12 @@
 import React from 'react';
 import './styles.css';
-import SearchBar from '../components/search/SearchBar';
+import SearchForm from '../components/search/SearchForm';
 
 const Home = () => {
   return (
     <div className='main'>
       <h1>Welcome to the Group Delivery app!</h1>
-      <SearchBar/>
+      <SearchForm/>
     </div>
   );
 }
