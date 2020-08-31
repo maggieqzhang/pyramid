@@ -32,7 +32,6 @@ def index():
         return 'You are logged in as ' + session['username']
 
     return render_template('pages/home.html')
-    #return {'Hi':'Hi'}
 
 @app.route('/login', methods=['GET','POST'])
 def login():
@@ -59,12 +58,10 @@ def about():
 def register():
     form = forms.RegisterForm(request.form)
 
-    #if request.method == 'POST':
     if request.method == 'POST' and form.validate():
         
         users = mongo.db.users
         
-        #existing_user = users.find_one({'name' : form.name.data})
         existing_user = users.find_one({'username' : request.form['name']})
         print(existing_user)
         
