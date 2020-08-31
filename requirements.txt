@@ -3,6 +3,9 @@ Flask-SQLAlchemy
 Flask-WTF
 WTForms
 coverage
+flask_pymongo
+dnspython
+pymongo[srv]
 # ecdsa
 # paramiko
 # pycrypto

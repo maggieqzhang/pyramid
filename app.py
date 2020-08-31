@@ -1,13 +1,16 @@
-from flask import Flask, render_template, url_for, request, session, redirect
+from flask import Flask, render_template, url_for, request, session, redirect, g
 from flask_pymongo import PyMongo
 from functools import wraps
 import json
 from bson import json_util
 import bcrypt
 import forms
+import dns
+from forms import *
+
 
 app = Flask(__name__)
-app.secret_key = 'pyramid'
+app.secret_key = 'pyramid' # super secure XD
 app.config['MONGO_URI'] = 'mongodb+srv://pyramid:pyramid@openwater.chp4s.mongodb.net/pyramid?retryWrites=true&w=majority'
 mongo = PyMongo(app)
 
@@ -24,16 +27,31 @@ def checkLoggedIn():
                 return {"Error":"Please Login"}
         return inner
     return check               
+          
+'''
+@app.before_request
+def before_request():
+    if "username" in session:
+        users = mongo.db.users
+        login_user = users.find_one({'name' : request.form['username']})
+        g.login_user = login_user
+'''
 
-@app.route('/')
 @app.route('/index')
+@app.route('/', methods = ['POST', 'GET'])
 def index():
+    form = SearchForm()
+    if form.is_submitted():
+        result = request.form
+        return result
+        
     if 'username' in session:
         return render_template('pages/status.html', status="You are logged in as "+session['username'])
+    #return render_template('pages/home.html')
+    return render_template('forms/search.html', form = form)
 
-    return render_template('pages/home.html')
 
-@app.route('/login', methods=['GET','POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     form = forms.LoginForm(request.form)
 
@@ -92,21 +110,19 @@ def register():
             return redirect(url_for('index'))
         
         return render_template('pages/status.html', status="That username already exists.")
-
     return render_template('forms/register.html',form=form)
 
+  
 @app.route('/profile', methods=['GET'])
 @checkLoggedIn()
 def profile():
     user = mongo.db.users.find_one({'username' : session['username']})
-
     return render_template('pages/status.html', status="Welcome " + user['firstname'] + "!")
     
     #user.pop('_id')
     #user.pop('password')
     #return json_util.dumps({'user':user})
     
-
 
 
 if __name__ == '__main__':

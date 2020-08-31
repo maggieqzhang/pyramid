@@ -1,5 +1,8 @@
-from flask_wtf import FlaskForm
-from wtforms import TextField, PasswordField, SubmitField
+
+from flask_wtf import Form, FlaskForm
+from wtforms import TextField, PasswordField, SubmitField, DateTimeField
+
+
 from wtforms.validators import DataRequired, EqualTo, Length
 
 # Set your classes here.
@@ -40,3 +43,9 @@ class ForgotForm(FlaskForm):
         'Email', validators=[DataRequired(), Length(min=6, max=40)]
     )
     submit = SubmitField('Submit')
+
+
+class SearchForm(Form):
+    cuisine = TextField('Cuisine or Restaurant Name')
+    time = DateTimeField('Pickup Time')
+    submit = SubmitField('Search')
