@@ -49,7 +49,6 @@ def index():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    form = LoginForm()
     users = mongo.db.users
     login_user = users.find_one({'username' : request.form['username']})
 
@@ -62,7 +61,6 @@ def login():
 
 @app.route('/register', methods=['POST', 'GET'])
 def register():
-    form = RegisterForm()
     if request.method == 'POST':
         users = mongo.db.users
         existing_user = users.find_one({'username' : request.form['username']})
@@ -76,7 +74,7 @@ def register():
         
         return 'That username already exists!'
 
-    return render_template('forms/register.html', form = form)
+    return render_template('forms/register.html')
 
 @app.route('/profile', methods=['GET'])
 @checkLoggedIn()
