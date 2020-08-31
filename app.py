@@ -5,6 +5,7 @@ import json
 from bson import json_util
 import bcrypt
 import dns
+from forms import *
 
 app = Flask(__name__)
 app.secret_key = 'pyramid' # super secure XD
@@ -36,15 +37,18 @@ def before_request():
 
 @app.route('/', methods = ['POST', 'GET'])
 def index():
-    if request.method == "POST":
+    form = SearchForm()
+    if form.is_submitted():
+        result = request.form
+        return result
+        
     if 'username' in session:
         return 'You are logged in as ' + session['username']
 
-    return {'Hi':'Hi'}
+    return render_template('forms/search.html', form = form)
 
-@app.route('/login', methods=['POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    
     users = mongo.db.users
     login_user = users.find_one({'username' : request.form['username']})
 
@@ -70,7 +74,7 @@ def register():
         
         return 'That username already exists!'
 
-    return render_template('register.html')
+    return render_template('forms/register.html')
 
 @app.route('/profile', methods=['GET'])
 @checkLoggedIn()
