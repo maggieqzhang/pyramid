@@ -1,0 +1,70 @@
+header {
+    display: flex;
+    align-items: center;
+}
+
+.menu a{
+    text-decoration: none;
+}
+
+nav {
+    position: absolute;
+    right: 0;
+    padding-right: 8rem;
+}
+
+@media screen and (min-width: 851px) {
+    .menu li {
+        display: inline-block;
+        font-weight: 600;
+        margin-left: 4rem;
+        cursor: pointer;
+    }
+    
+    .menu {
+        font-size: 1em;
+    }
+  }
+  
+  /* If the screen size is 850px wide or less */
+  @media screen and (max-width: 850px) {
+    .menu li {
+        list-style: none;
+        margin-right: 20px;
+    }
+    
+    nav {
+        padding-right: 0.5rem;
+    }
+  }
+
+  .menu a:hover,
+  .menu a:active,
+  .menu a.active {
+    color: #293241;
+}
+
+.logo {
+    margin: 2rem 7rem;
+}
+
+.logo img{
+    width: 12rem;
+}
+
+.logout-btn {
+    border-radius: 6px;
+    width: auto;
+    font-size: 1rem;
+    font-weight: 800;
+    cursor: pointer;
+    padding: 0.7rem 1.5rem;
+    color: #3d5a80;
+    border: 1px solid #3d5a80;
+    margin-top: 2rem;
+}
+
+.logout-btn:hover {
+    color: #E0FBFC;
+    background: #3d5a80;
+}
