@@ -26,7 +26,7 @@ class RegisterForm(FlaskForm):
         validators = [DataRequired(),
         EqualTo('password', message='Passwords must match')]
     )
-    submit = SubmitField('Register')
+    submit = SubmitField('Create Account')
 
 
 class LoginForm(FlaskForm):

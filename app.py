@@ -47,7 +47,7 @@ def login():
         if login_user:
             if bcrypt.hashpw(request.form['password'].encode('utf-8'), login_user['password']) == login_user['password']:
                 session['username'] = request.form['username']
-                return redirect(url_for('index'))
+                return redirect(url_for('profile'))
 
         return render_template('pages/status.html', status="Invalid username or password")
     
@@ -99,9 +99,12 @@ def register():
 @checkLoggedIn()
 def profile():
     user = mongo.db.users.find_one({'username' : session['username']})
-    user.pop('_id')
-    user.pop('password')
-    return json_util.dumps({'user':user})
+
+    return render_template('pages/status.html', status="Welcome " + user['firstname'] + "!")
+    
+    #user.pop('_id')
+    #user.pop('password')
+    #return json_util.dumps({'user':user})
     
 
 
