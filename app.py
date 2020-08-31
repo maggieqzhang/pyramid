@@ -7,7 +7,7 @@ import bcrypt
 import dns
 
 app = Flask(__name__)
-app.secret_key = 'pyramid'
+app.secret_key = 'pyramid' # super secure XD
 app.config['MONGO_URI'] = 'mongodb+srv://pyramid:pyramid@openwater.chp4s.mongodb.net/pyramid?retryWrites=true&w=majority'
 mongo = PyMongo(app)
 
@@ -23,15 +23,16 @@ def checkLoggedIn():
             else:
                 return {"Error":"Please Login"}
         return inner
-    return check               
-
-
+    return check     
+          
+'''
 @app.before_request
 def before_request():
     if "username" in session:
         users = mongo.db.users
         login_user = users.find_one({'name' : request.form['username']})
         g.login_user = login_user
+'''
 
 @app.route('/', methods = ['POST', 'GET'])
 def index():
@@ -78,7 +79,6 @@ def profile():
     user.pop('_id')
     user.pop('password')
     return json_util.dumps({'user':user})
-    
 
 if __name__ == '__main__':
     app.run(debug=True)
