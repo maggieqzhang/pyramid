@@ -1,8 +1,18 @@
-import React from "react";
-// import { AuthContext } from "./../Auth.js";
+import React, { useState, useEffect, useContext } from "react";
 import { NavLink } from 'react-router-dom';
+import { AuthContext } from "./../Auth.js";
 
 const Login = () => {
+
+  const [initialData, setInitialData] = useState([{}])
+
+  useEffect(() => {
+    fetch('/login').then(
+      response => response.json())
+      .then(data => setInitialData(data))
+  });
+
+  const { currentUser } = useContext(AuthContext);
 
   return (
     <div className='login'>
