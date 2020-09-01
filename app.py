@@ -43,9 +43,11 @@ def index(): #need to check if it's a restaurant or if it's a user who is trying
             order_id = orders.insert_one({
                     'date': "{:%B %d, %Y}".format(datetime.datetime.now()),
                     'time': request.form['time'],
+                    'location': request.form['location'],
                     'maxOrders': request.form['maxOrders'],
                     'ordersFulfilled': 0,
-                    'restaurant': cur_restaurant['_id']
+                    'restaurant': cur_restaurant['_id'],
+                    'customerOrders': {}
                     }).inserted_id
             
             cur_orders = cur_restaurant.get('orders')
@@ -252,6 +254,26 @@ def listFriends():
         friends = user['friends']    
     return json_util.dumps({'friends': friends})
 
+@app.route('/listfriends/nearby', methods = ['GET', 'POST']) #get is to display, post is to join order
+@checkLoggedIn()
+def nearbyFriends():
+    if request.method == "GET":
+        user = mongo.db.users.find_one({'username' : session['username']})
+        orders = mongo.db.orders
+        friends = user.get('friends')
+        recent_orders = []
+        if friends:
+            for f in friends: #identified via friend username 
+                o = f.get('orders')
+                if o:
+                    most_recent_order = o[-1]
+                    bulk_order = orders.find_one({'_id': most_recent_order.get('parent_order')}) #need to create a checkout/card to track user orders 
+                    recent_orders.append({f.get('_id'): bulk_order})
+            return json_util.dumps(recent_orders)
+        return "you have no friends :("
+    else:
+        return "you are trying to join this new order"
+        
 
 @app.route('/allrestaurants', methods=['GET'])
 def allrestaurants():
