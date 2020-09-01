@@ -1,13 +1,9 @@
 .main {
     width: 80%;
+    margin: 4rem auto;
 }
 
 /* LOGIN */
-
-.login-page {
-    width: 100%;
-/* background-color: rgba(61, 90, 128, 0.02); */
-}
 
 .login {
     margin: 4rem auto 10rem auto;

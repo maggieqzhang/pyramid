@@ -11,6 +11,7 @@ const Nav = () => {
             </Link>
             <nav>
                 <ul className='menu'>
+                    <li><NavLink to='/account'>Account</NavLink></li>
                     <li><NavLink to='/login'>Login</NavLink></li>
                     <li><NavLink to='/signup'>Signup</NavLink></li>
                     {/* {currentUser && <li><button className='logout-btn main-blue' onClick={()=>app.auth().signOut()}>Logout</button></li>} */}

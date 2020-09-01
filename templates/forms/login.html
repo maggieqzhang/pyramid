@@ -3,11 +3,24 @@
 {% block content %}
   <form method="post" class="form">
     <h3 class="form-heading">Login <a href="{{ url_for('index') }}" title="Back to homepage"><i class="fa fa-home pull-right"></i></a></h3>
-    {{ form.name(class_ = 'form-control first-input', placeholder = form.name.label.text, required = true, autofocus = true) }}
-    {{ form.password(class_ = 'form-control last-input', placeholder = form.password.label.text, required = true) }}
+
+    <form action="" method="POST">
+      {{ form.hidden_tag() }}
+
+      {{ form.username(class_ = 'form-control first-input', placeholder = form.username.label.text, required = true, autofocus = true) }}
+      {% for error in form.username.errors %}
+              <span style="color: red;">[{{ error }}]</span>
+      {% endfor %}
+
+      {{ form.password(class_ = 'form-control last-input', placeholder = form.password.label.text, required = true) }}
+      {% for error in form.password.errors %}
+              <span style="color: red;">[{{ error }}]</span>
+      {% endfor %}
+      <br><p>{{ form.submit() }}</p>
+    </form>
+
     <p class="pull-left"><a href="{{ url_for('forgot') }}">Forgot Password?</a></p>
     <p class="pull-right"><a href="{{ url_for('register') }}">Register</a></p>
-    <input type="submit" value="Submit" class="btn btn-primary btn-lg btn-block" disabled>
-    <p>You must add database as well as Flask-Login to enable user management. See the <a href="http://www.realpython.com">Real Python</a> course for more info!</p>
+
   </form>
 {% endblock %}

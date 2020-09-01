@@ -2,7 +2,13 @@ from flask_wtf import Form
 from wtforms import TextField, PasswordField, SubmitField, DateTimeField, IntegerField
 from wtforms.validators import DataRequired, EqualTo, Length, Email, NumberRange
 
-class RegisterForm(Form):
+class RegisterForm(FlaskForm):
+    first = TextField(
+        'First Name', validators=[DataRequired(), Length(min=1, max=25)]
+    )
+    last = TextField(
+        'Last Name', validators=[DataRequired(), Length(min=1, max=25)]
+    )
     username = TextField(
         'Username', validators=[DataRequired(), Length(min=6, max=25)]
     )
@@ -14,20 +20,23 @@ class RegisterForm(Form):
     )
     confirm = PasswordField(
         'Repeat Password',
-        [DataRequired(),
+        validators = [DataRequired(),
         EqualTo('password', message='Passwords must match')]
     )
+    submit = SubmitField('Create Account')
 
 
-class LoginForm(Form):
-    username = TextField('Username', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])
+class LoginForm(FlaskForm):
+    username = TextField('Username', [DataRequired()])
+    password = PasswordField('Password', [DataRequired()])
+    submit = SubmitField('Login')
 
-
-class ForgotForm(Form):
+class ForgotForm(FlaskForm):
     email = TextField(
         'Email', validators=[DataRequired(), Length(min=6, max=40)]
     )
+    submit = SubmitField('Submit')
+
 
 
 class SearchForm(Form):
