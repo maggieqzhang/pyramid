@@ -1,9 +1,17 @@
+/* USER NAV */
+
 header {
     display: flex;
     align-items: center;
+    background: #F5C451;
+    height: 150px;
 }
 
-.menu a{
+#home-header {
+    background: white;
+}
+
+header a {
     text-decoration: none;
 }
 
@@ -44,8 +52,19 @@ nav {
     color: #293241;
 }
 
-.logo {
+.logo{
     margin: 2rem 7rem;
+}
+
+.logo h1 {
+    font-weight: bold;
+    font-size: 64px;
+    line-height: 78px;
+    margin: 0;
+}
+
+.logo p {
+    margin: 0;
 }
 
 .logo img{
@@ -68,3 +87,15 @@ nav {
     color: #E0FBFC;
     background: #3d5a80;
 }
+
+/* HOME NAV */
+
+/* .home-header {
+    display: flex;
+    align-items: center;
+    height: 150px;
+}
+
+.home-header a {
+    text-decoration: none;
+} */

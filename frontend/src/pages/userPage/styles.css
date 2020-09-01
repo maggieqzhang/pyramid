@@ -1,0 +1,63 @@
+.userpage-wrapper {
+    display: flex;
+    flex-direction: row;
+}
+
+.user-main {
+    margin-left: 3rem;
+    width: 100%;
+}
+
+.user-icons-wrapper {
+    background: #C4C4C4;
+    padding: 1rem 3rem;
+    display: flex;
+    border-radius: 10px;
+    border: 1px solid black;
+    margin-left: 3rem;
+}
+
+.user-icons-wrapper ul {
+    list-style: none;
+    display: flex;
+    padding: 0;
+}
+
+.purchases-header {
+    display: flex;
+    margin-top: 1rem;
+}
+
+.purchases-list {
+    display: flex;
+    flex-direction: column;
+    margin-top: 0.5rem;
+    width: 90%;
+}
+
+.single-purchase {
+    width: 100%;
+    background: #C4C4C4;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: row;
+    font-size: 0.9rem;
+    justify-content: space-between;
+    padding: 0.3rem 1rem;
+    margin-top: 0.5rem;
+    vertical-align: middle;
+}
+
+.single-purchase span {
+    font-weight: bold;
+}
+
+.purchase-price {
+    font-weight: 600;
+    font-size: 1.2rem;
+    margin: auto 0rem;
+}
+
+.location-name {
+    color: red;
+}
