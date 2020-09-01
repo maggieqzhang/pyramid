@@ -5,7 +5,7 @@ import json
 from bson import json_util
 import bcrypt
 import dns
-from datetime import date
+import datetime
 
 
 app = Flask(__name__)
@@ -31,21 +31,26 @@ def checkLoggedIn():
 def index(): #need to check if it's a restaurant or if it's a user who is trying to
     if request.method == 'POST':
         if 'type' not in session or session['type'] == 'user': #person just entered our website and wants to search w/out having logged in
-            search_query = {'food': request.form['cuisine'], 'time': request.form['time'] }
-            #[URGENT]figure out how to pass this over to the next search query step
-
+            search_query = {'food': request.form['cuisine'], 'time': request.form['time']}
+            return search_query
 
         elif session['type'] == 'restaurant':
             #find which restaurant it belongs to and then add that in their order form
             restaurants = mongo.db.restaurants
-            restaurantName = restaurants.update(
-                    {'address.streetAddress': session['address'] }, {$addToSet:{'orders': {
-                    'date': date.today(),
+            cur_restaurant = restaurants.find_one({'address.streetAddress': session['address']})
+            
+            orders = mongo.db.orders
+            order_id = orders.insert_one({
+                    'date': "{:%B %d, %Y}".format(datetime.datetime.now()),
                     'time': request.form['time'],
                     'maxOrders': request.form['maxOrders'],
-                    'ordersFulfilled': 0
-                    }}}
-                )
+                    'ordersFulfilled': 0,
+                    'restaurant': cur_restaurant['_id']
+                    }).inserted_id
+            
+            cur_orders = cur_restaurant.get('orders')
+            cur_orders.append(order_id)
+            restaurants.update_one({'_id':cur_restaurant['_id']}, {'$set':{'orders': cur_orders}})
             return redirect(url_for('index'))
     if 'username' in session:
         return 'You are logged in as ' + session['username']
@@ -122,7 +127,7 @@ def restaurantRegister():
     session.pop('username', None)
     if request.method == 'POST':
         restaurants = mongo.db.restaurants
-        existing_restaurant = restaurants.find_one({'restaurant' : request.form['restaurant']})
+        existing_restaurant = restaurants.find_one({'address.streetAddress' : request.form['streetAddress']}) #db.restaurants.find({'address.streetAddress' : '100 chipotle'})
         if existing_restaurant is None:
             hashpass = bcrypt.hashpw(request.form['password'].encode('utf-8'), bcrypt.gensalt())
             restaurants.insert(
