@@ -239,6 +239,17 @@ def addFriend():
     return { 'status' : 'Friend added successfully'}
 
 
+@app.route('/listfriends', methods=['GET','POST'])
+@checkLoggedIn()
+def listFriends():
+    user = mongo.db.users.find_one({'username' : session['username']})
+    friends = user.get('friends')
+    if friends is None:
+        user['friends'] = []
+        friends = user['friends']    
+    return json_util.dumps({'friends': friends})
+
+
 @app.route('/allrestaurants', methods=['GET'])
 def allrestaurants():
     #gets list of all restaurants
@@ -253,12 +264,7 @@ def allrestaurants():
             
             'orders':r.get('orders')
         })
-
-
     return json_util.dumps({"restaurants" : restaurant_list })
-
-
-
 
 
 if __name__ == '__main__':
