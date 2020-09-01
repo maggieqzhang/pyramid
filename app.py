@@ -4,10 +4,8 @@ from functools import wraps
 import json
 from bson import json_util
 import bcrypt
-import forms
 import dns
 from datetime import date
-from forms import *
 
 
 app = Flask(__name__)
@@ -53,7 +51,7 @@ def index(): #need to check if it's a restaurant or if it's a user who is trying
         return 'You are logged in as ' + session['username']
     return {1:1}
 
-
+#*******************************************USER LOGIN AND REGISTER*********************************************
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if 'username' in session:
@@ -72,24 +70,6 @@ def login():
         return 'Invalid username/password combination'
     
     return render_template('forms/login.html',form=form)
-
-
-@app.route('/logout',methods=['GET'])
-def logout():
-    if 'username' in session:
-        session.pop('username')
-        return render_template('pages/status.html', status="You have logged out")
-    return render_template('pages/status.html', status="You are not logged in")
-
-
-@app.route('/forgot',methods=['GET'])
-def forgot():
-    return redirect(url_for('index'))
-
-
-@app.route('/about')
-def about():
-    return render_template('pages/placeholder.about.html')
 
 
 @app.route('/register', methods=['POST', 'GET'])
@@ -116,15 +96,26 @@ def register():
 
     return render_template('forms/register.html')
 
-  
-@app.route('/profile', methods=['GET'])
-@checkLoggedIn()
-def profile():
-    user = mongo.db.users.find_one({'username' : session['username']})
-    user.pop('_id')
-    user.pop('password')
-    return json_util.dumps({'user':user})
-    
+
+
+@app.route('/logout',methods=['GET'])
+def logout():
+    if 'username' in session:
+        session.pop('username')
+        return {'status':'Logout'}
+    return {'status':'Not Logged In'}
+
+
+#**********************Will Not be required as will be handled by react server****************************
+# @app.route('/forgot',methods=['GET'])
+# def forgot():
+#     return redirect(url_for('index'))
+
+
+# @app.route('/about')
+# def about():
+#     return render_template('pages/placeholder.about.html')
+#*********************************Restaurant Registration and Login****************************************************************************
 
 @app.route('/restaurantregister', methods = ['GET', 'POST'])
 def restaurantRegister():
@@ -170,6 +161,28 @@ def restaurantLogin():
             return redirect(url_for('index'))
 
     return 'Invalid username/password combination'
+
+#************************FEATURES API ENDPOINTS **************************************************************
+@app.route('/profile', methods=['GET'])
+@checkLoggedIn()
+def profile():
+    user = mongo.db.users.find_one({'username' : session['username']})
+    user.pop('_id')
+    user.pop('password')
+    return json_util.dumps({'user':user})
+
+
+
+@app.route('/transactiondetails/<id>', methods=['GET'])
+@checkLoggedIn()
+def txdetails(id):
+    if(id):
+        # tx=mongo.db.transactions.find_one({'_id':id})
+        # print(tx)
+        return {'success':id}  
+    else:
+        return {'error':"error"}
+
 
 
 
