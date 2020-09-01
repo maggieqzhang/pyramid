@@ -60,9 +60,9 @@ def index(): #need to check if it's a restaurant or if it's a user who is trying
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if 'username' in session:
-        return render_template('pages/status.html', status="You are already logged in")
+        return {'status': 'Already logged in' }
 
-    if request.method == 'POST' and form.validate():
+    if request.method == 'POST':
         users = mongo.db.users
         login_user = users.find_one({'username' : request.form['username']})
 
@@ -70,11 +70,11 @@ def login():
             if bcrypt.hashpw(request.form['password'].encode('utf-8'), login_user['password']) == login_user['password']:
                 session['username'] = request.form['username']
                 session['type'] = 'user'
-                return redirect(url_for('profile'))
+                return { 'status' : 'Login Successful'}
 
-        return 'Invalid username/password combination'
+        return {'status': 'Invalid username/password combination' }
     
-    return render_template('forms/login.html',form=form)
+    return { 1 : 1 }
 
 
 @app.route('/register', methods=['POST', 'GET'])
@@ -85,30 +85,33 @@ def register():
         existing_user = users.find_one({'username' : request.form['username']})
 
         if existing_user is None:
-            hashpass = bcrypt.hashpw(request.form['pass'].encode('utf-8'), bcrypt.gensalt())
+            hashpass = bcrypt.hashpw(request.form['password'].encode('utf-8'), bcrypt.gensalt())
             users.insert(
                     {
                     'username' : request.form['username'],
                     'password' : hashpass,
                     'email': request.form['email'],
-                    'orders':[]
+                    'firstname' : request.form['firstname'],
+                    'lastname' : request.form['lastname'],
+                    'orders':[],
+                    'friends': []
                     }
                     )
             session['username'] = request.form['username']
-            return redirect(url_for('index'))
+            #return redirect(url_for('index')) 
+            return {'status' : 'Registration successful'}
 
-        return 'That username already exists!'
+        return {'status' : 'That username already exists!'}
 
-    return render_template('forms/register.html')
+    return { 1 : 1 }
 
 
 
 @app.route('/logout',methods=['GET'])
+@checkLoggedIn()
 def logout():
-    if 'username' in session:
-        session.pop('username')
-        return {'status':'Logout'}
-    return {'status':'Not Logged In'}
+    session.pop('username')
+    return {'status':'Logout'}
 
 
 #**********************Will Not be required as will be handled by react server****************************
@@ -189,6 +192,82 @@ def txdetails(id):
         return {'error':"error"}
 
 
+
+#takes one parameter f_username that contains username of friend to be added
+@app.route('/addfriend', methods=['GET','POST'])
+@checkLoggedIn()
+def addFriend():
+    user = mongo.db.users.find_one({'username' : session['username']})
+    
+    friends = user.get('friends')
+    if friends is None:
+        user['friends'] = []
+        friends = user['friends']
+    
+    if 'f_username' in request.args:
+        f_username = request.args['f_username']
+    else:
+        return {'error' : 'No Friend Username Provided. Please Specify Friend'}
+
+    friend = mongo.db.users.find_one({'username' : f_username})
+
+    if friend is None:
+        return {'error' : 'The friend you are trying to add does not exist'}
+    elif session['username'] == f_username:
+        return {'error' : 'Can\'t add yourself as a friend!' }
+
+    #Check if user and f_username are already friends
+    for f in friends:
+        if f == f_username:
+            return {'status' : 'You are already friends!'}
+    
+    
+    #update friends list of current user
+    friends.append(f_username)
+    mongo.db.users.update_one({'_id':user['_id']},{
+       "$set": { 'friends': friends }
+    })
+
+    #update friends list of f_username
+    user = mongo.db.users.find_one({'username' : f_username})
+    friends = user.get('friends')
+    if friends is None:
+        user['friends'] = []
+        friends = user['friends']
+    friends.append(session['username'])
+    mongo.db.users.update_one({'_id':user['_id']},{
+       "$set": { 'friends': friends }
+    })
+
+    return { 'status' : 'Friend added successfully'}
+
+
+@app.route('/listfriends', methods=['GET','POST'])
+@checkLoggedIn()
+def listFriends():
+    user = mongo.db.users.find_one({'username' : session['username']})
+    friends = user.get('friends')
+    if friends is None:
+        user['friends'] = []
+        friends = user['friends']    
+    return json_util.dumps({'friends': friends})
+
+
+@app.route('/allrestaurants', methods=['GET'])
+def allrestaurants():
+    #gets list of all restaurants
+    restaurants = mongo.db.restaurants.find()
+    restaurant_list = []
+    for r in restaurants:
+        restaurant_list.append({
+            'username' : r.get('username'),
+            'email': r.get('email'),
+            
+            'address': r.get('address'),
+            
+            'orders':r.get('orders')
+        })
+    return json_util.dumps({"restaurants" : restaurant_list })
 
 
 if __name__ == '__main__':
