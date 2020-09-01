@@ -4,16 +4,18 @@ import './styles.css';
 
 const HomeNav = () => {
     // const { currentUser } = useContext(AuthContext);
+    const currentTime= new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+
     return (
         <header id='home-header'>
-            <Link to='/'>
                 <div className='logo'>
                 <h1>Rumen</h1>
                 <p>Group food ordering made simple</p>
                 </div>
-            </Link>
             <nav>
                 <ul className='menu'>
+                    <li id='current-time'>{currentTime}</li>
+                    <li id='home-nav-menu'><NavLink to='/location'>Harmony Trails Park</NavLink></li>
                     <li><NavLink to='/account'>Account</NavLink></li>
                     <li><NavLink to='/login'>Login</NavLink></li>
                     <li><NavLink to='/signup'>Signup</NavLink></li>

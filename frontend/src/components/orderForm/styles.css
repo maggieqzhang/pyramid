@@ -1,0 +1,71 @@
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1040;
+    width: 100vw;
+    height: 100vh;
+    background-color: #000;
+    opacity: .5;
+}
+  
+.modal-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1050;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    outline: 0;
+}
+  
+.modal {
+    z-index: 100;
+    background: white;
+    position: relative;
+    margin: 1.75rem auto;
+    border-radius: 6px;
+    max-width: 600px;
+    padding: 1rem 2rem 2rem 3rem;
+    color: #293241;
+}
+  
+.modal-header {
+    display: flex;
+    justify-content: flex-end;
+}
+  
+.modal-close-button {
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1;
+    color: black;
+    cursor: pointer;
+    border: none;
+}
+
+.modal h1 {
+    text-align: center;
+}
+
+.modal h2 {
+    margin: 1rem 0;
+    font-weight: bold;
+}
+
+.venue-meals img {
+    width: 45%;
+    padding: 0.2rem;
+    border-radius: 20px;
+}
+
+.add-to-cart-btn {
+    width: 100%;
+    font-size: 1.5rem;
+    border-radius: 10px;
+    margin-top: 2rem;
+    font-weight: 600;
+    cursor: pointer;
+}

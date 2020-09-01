@@ -3,9 +3,11 @@ import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Home from './pages/Home';
+import Checkout from './pages/checkout/Checkout';
 import { AuthProvider } from './Auth';
 import UserProfile from './pages/userPage/UserProfile';
 import FriendsPage from './pages/friendsPage/FriendsPage';
+import SelectLocation from './pages/selectLocation/SelectLocation';
 
 function App() {
   return (
@@ -13,8 +15,10 @@ function App() {
       <Router>
         <Switch>
           <Route path='/' exact component={Home} />
+          <Route path='/location' exact component={SelectLocation} />
           <Route path='/account' exact component={UserProfile} />
           <Route path='/account/friends' exact component={FriendsPage} />
+          <Route path='/checkout' exact component={Checkout} />
           <Route path='/login' exact component={Login} />
           <Route path='/signup' exact component={Signup} />
         </Switch>

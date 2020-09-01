@@ -2,7 +2,6 @@ import React from 'react';
 import './styles.css';
 import UserNav from '../../components/nav/UserNav';
 import SideNav from '../../components/sidenav/SideNav';
-import { Link } from 'react-router-dom';
 
 const FriendsPage = () => {
   return (

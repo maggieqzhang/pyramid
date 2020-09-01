@@ -1,0 +1,55 @@
+.location-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    margin: auto;
+}
+
+.location-wrapper h1 {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 600;
+}
+
+.location-wrapper h2 {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.location-wrapper input {
+    width: 250px;
+    margin: auto;
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
+    background: #C4C4C4;
+    border: none;
+    font-size: 1rem;
+}
+
+.location-option {
+    display: flex;
+    flex-direction: row;
+    width: 80%;
+    margin: auto;
+    background: #C4C4C4;
+    margin-top: 1rem;
+    border-radius: 15px;
+    padding: 0 2rem;
+    font-size: 1.6rem;
+    justify-content: space-between;
+}
+
+.distance {
+    font-size: 1rem;
+    margin: auto 0;
+}
+
+.location-number {
+    font-weight: 600;
+}
+
+.location-result-name {
+    text-align: left;
+}

@@ -90,12 +90,14 @@ nav {
 
 /* HOME NAV */
 
-/* .home-header {
-    display: flex;
-    align-items: center;
-    height: 150px;
+#home-nav-menu {
+    margin-right: 10rem;
+    background: #C4C4C4;
+    font-weight: 400;
+    border-radius: 5px;
+    padding: 0.2rem 1rem;
 }
 
-.home-header a {
-    text-decoration: none;
-} */
+#current-time {
+    cursor: default;
+}
