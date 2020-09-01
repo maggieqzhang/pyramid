@@ -6,6 +6,7 @@ coverage
 flask_pymongo
 dnspython
 pymongo[srv]
+email_validator
 # ecdsa
 # paramiko
 # pycrypto
