@@ -1,0 +1,46 @@
+.sidenav {
+    width: 380px;
+    height: 100%;
+    background: #F6BE4F;
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+}
+
+.sidenav img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin: auto;
+}
+
+.user-details {
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    text-align: center;
+}
+
+.user-details h1, h2{
+    margin: 0;
+}
+
+.side-menu {
+    display: flex;
+    flex-direction: column;
+    background: #C4C4C4;
+    border-radius: 15px;
+    width: 309px;
+    height: 380px;
+    margin: auto;
+}
+
+.side-menu ul {
+    list-style: none;
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+
+.side-menu li{
+    margin-top: 1rem;
+}

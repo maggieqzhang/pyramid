@@ -1,0 +1,58 @@
+.friends-list {
+    background: #C4C4C4;
+    border-radius: 15px;
+    width: 30%;
+    padding: 1rem 1rem;
+}
+
+.single-friend {
+    background: #B6B6B6;
+    border-radius: 15px;
+    margin: 0.5rem auto;
+    display: flex;
+    padding: 0.7rem;
+}
+
+.single-friend p{
+    margin: auto;
+}
+
+.friends-photo {
+    width: 50px;
+    height: 50px;
+    background: white;
+    border-radius: 50%;
+    margin: auto;
+}
+
+.friends-wrapper {
+    display: flex;
+    flex-direction: row;
+}
+
+#what-to-eat-header {
+    font-size: 1.5rem;
+    text-align: center;
+    margin-left: 40%;
+    margin-top: 1.5rem;
+}
+
+.what-friends-eat {
+    display: flex;
+    flex-direction: column;
+    background: #C4C4C4;
+    padding: 1rem 1rem;
+    width: 55%;
+    margin-left: 2rem;
+    border-radius: 15px;
+}
+
+.single-eating-wish {
+    background: #B6B6B6;
+    border-radius: 15px;
+    width: 95%;
+    margin: 0.5rem auto;
+    display: flex;
+    justify-content: space-evenly;
+    padding: 0.7rem;
+}
