@@ -5,7 +5,7 @@ import json
 from bson import json_util
 import bcrypt
 import dns
-from datetime import date
+import datetime
 
 
 app = Flask(__name__)
@@ -31,21 +31,28 @@ def checkLoggedIn():
 def index(): #need to check if it's a restaurant or if it's a user who is trying to
     if request.method == 'POST':
         if 'type' not in session or session['type'] == 'user': #person just entered our website and wants to search w/out having logged in
-            search_query = {'food': request.form['cuisine'], 'time': request.form['time'] }
-            #[URGENT]figure out how to pass this over to the next search query step
-
+            search_query = {'food': request.form['cuisine'], 'time': request.form['time']}
+            return search_query
 
         elif session['type'] == 'restaurant':
             #find which restaurant it belongs to and then add that in their order form
             restaurants = mongo.db.restaurants
-            restaurantName = restaurants.update(
-                    {'address.streetAddress': session['address'] }, {$addToSet:{'orders': {
-                    'date': date.today(),
+            cur_restaurant = restaurants.find_one({'address.streetAddress': session['address']})
+            
+            orders = mongo.db.orders
+            order_id = orders.insert_one({
+                    'date': "{:%B %d, %Y}".format(datetime.datetime.now()),
                     'time': request.form['time'],
+                    'location': request.form['location'],
                     'maxOrders': request.form['maxOrders'],
-                    'ordersFulfilled': 0
-                    }}}
-                )
+                    'ordersFulfilled': 0,
+                    'restaurant': cur_restaurant['_id'],
+                    'customerOrders': {}
+                    }).inserted_id
+            
+            cur_orders = cur_restaurant.get('orders')
+            cur_orders.append(order_id)
+            restaurants.update_one({'_id':cur_restaurant['_id']}, {'$set':{'orders': cur_orders}})
             return redirect(url_for('index'))
     if 'username' in session:
         return 'You are logged in as ' + session['username']
@@ -55,9 +62,9 @@ def index(): #need to check if it's a restaurant or if it's a user who is trying
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if 'username' in session:
-        return render_template('pages/status.html', status="You are already logged in")
+        return {'status': 'Already logged in' }
 
-    if request.method == 'POST' and form.validate():
+    if request.method == 'POST':
         users = mongo.db.users
         login_user = users.find_one({'username' : request.form['username']})
 
@@ -65,11 +72,11 @@ def login():
             if bcrypt.hashpw(request.form['password'].encode('utf-8'), login_user['password']) == login_user['password']:
                 session['username'] = request.form['username']
                 session['type'] = 'user'
-                return redirect(url_for('profile'))
+                return { 'status' : 'Login Successful'}
 
-        return 'Invalid username/password combination'
+        return {'status': 'Invalid username/password combination' }
     
-    return render_template('forms/login.html',form=form)
+    return { 1 : 1 }
 
 
 @app.route('/register', methods=['POST', 'GET'])
@@ -80,30 +87,33 @@ def register():
         existing_user = users.find_one({'username' : request.form['username']})
 
         if existing_user is None:
-            hashpass = bcrypt.hashpw(request.form['pass'].encode('utf-8'), bcrypt.gensalt())
+            hashpass = bcrypt.hashpw(request.form['password'].encode('utf-8'), bcrypt.gensalt())
             users.insert(
                     {
                     'username' : request.form['username'],
                     'password' : hashpass,
                     'email': request.form['email'],
-                    'orders':[]
+                    'firstname' : request.form['firstname'],
+                    'lastname' : request.form['lastname'],
+                    'orders':[],
+                    'friends': []
                     }
                     )
             session['username'] = request.form['username']
-            return redirect(url_for('index'))
+            #return redirect(url_for('index')) 
+            return {'status' : 'Registration successful'}
 
-        return 'That username already exists!'
+        return {'status' : 'That username already exists!'}
 
-    return render_template('forms/register.html')
+    return { 1 : 1 }
 
 
 
 @app.route('/logout',methods=['GET'])
+@checkLoggedIn()
 def logout():
-    if 'username' in session:
-        session.pop('username')
-        return {'status':'Logout'}
-    return {'status':'Not Logged In'}
+    session.pop('username')
+    return {'status':'Logout'}
 
 
 #**********************Will Not be required as will be handled by react server****************************
@@ -122,7 +132,7 @@ def restaurantRegister():
     session.pop('username', None)
     if request.method == 'POST':
         restaurants = mongo.db.restaurants
-        existing_restaurant = restaurants.find_one({'restaurant' : request.form['restaurant']})
+        existing_restaurant = restaurants.find_one({'address.streetAddress' : request.form['streetAddress']}) #db.restaurants.find({'address.streetAddress' : '100 chipotle'})
         if existing_restaurant is None:
             hashpass = bcrypt.hashpw(request.form['password'].encode('utf-8'), bcrypt.gensalt())
             restaurants.insert(
@@ -184,6 +194,102 @@ def txdetails(id):
         return {'error':"error"}
 
 
+
+#takes one parameter f_username that contains username of friend to be added
+@app.route('/addfriend', methods=['GET','POST'])
+@checkLoggedIn()
+def addFriend():
+    user = mongo.db.users.find_one({'username' : session['username']})
+    
+    friends = user.get('friends')
+    if friends is None:
+        user['friends'] = []
+        friends = user['friends']
+    
+    if 'f_username' in request.args:
+        f_username = request.args['f_username']
+    else:
+        return {'error' : 'No Friend Username Provided. Please Specify Friend'}
+
+    friend = mongo.db.users.find_one({'username' : f_username})
+
+    if friend is None:
+        return {'error' : 'The friend you are trying to add does not exist'}
+    elif session['username'] == f_username:
+        return {'error' : 'Can\'t add yourself as a friend!' }
+
+    #Check if user and f_username are already friends
+    for f in friends:
+        if f == f_username:
+            return {'status' : 'You are already friends!'}
+    
+    
+    #update friends list of current user
+    friends.append(f_username)
+    mongo.db.users.update_one({'_id':user['_id']},{
+       "$set": { 'friends': friends }
+    })
+
+    #update friends list of f_username
+    user = mongo.db.users.find_one({'username' : f_username})
+    friends = user.get('friends')
+    if friends is None:
+        user['friends'] = []
+        friends = user['friends']
+    friends.append(session['username'])
+    mongo.db.users.update_one({'_id':user['_id']},{
+       "$set": { 'friends': friends }
+    })
+
+    return { 'status' : 'Friend added successfully'}
+
+
+@app.route('/listfriends', methods=['GET','POST'])
+@checkLoggedIn()
+def listFriends():
+    user = mongo.db.users.find_one({'username' : session['username']})
+    friends = user.get('friends')
+    if friends is None:
+        user['friends'] = []
+        friends = user['friends']    
+    return json_util.dumps({'friends': friends})
+
+@app.route('/listfriends/nearby', methods = ['GET', 'POST']) #get is to display, post is to join order
+@checkLoggedIn()
+def nearbyFriends():
+    if request.method == "GET":
+        user = mongo.db.users.find_one({'username' : session['username']})
+        orders = mongo.db.orders
+        friends = user.get('friends')
+        recent_orders = []
+        if friends:
+            for f in friends: #identified via friend username 
+                o = f.get('orders')
+                if o:
+                    most_recent_order = o[-1]
+                    bulk_order = orders.find_one({'_id': most_recent_order.get('parent_order')}) #need to create a checkout/card to track user orders 
+                    recent_orders.append({f.get('_id'): bulk_order})
+            return json_util.dumps(recent_orders)
+        return "you have no friends :("
+    else:
+        return "you are trying to join this new order"
+        
+
+@app.route('/allrestaurants', methods=['GET'])
+def allrestaurants():
+    #gets list of all restaurants
+    restaurants = mongo.db.restaurants.find()
+    restaurant_list = []
+    for r in restaurants:
+        restaurant_list.append({
+            'username' : r.get('username'),
+            'email': r.get('email'),
+            
+            'address': r.get('address'),
+            
+            'orders':r.get('orders')
+        })
+    return json_util.dumps({"restaurants" : restaurant_list })
 
 
 if __name__ == '__main__':
