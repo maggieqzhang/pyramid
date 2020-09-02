@@ -4,23 +4,25 @@
 }
 
 .user-main {
-    margin-left: 3rem;
+    margin-left: 5rem;
     width: 100%;
 }
 
 .user-icons-wrapper {
-    background: #C4C4C4;
-    padding: 1rem 3rem;
+    width: 150px;
+    height: 50px;
     display: flex;
     border-radius: 10px;
     border: 1px solid black;
-    margin-left: 3rem;
+    margin-left: 10rem;
+    margin-top: 1rem;
+    padding: 0 0.7rem;
 }
 
-.user-icons-wrapper ul {
-    list-style: none;
-    display: flex;
-    padding: 0;
+.user-icons-wrapper img {
+    width: 30px;
+    height: 30px;
+    margin: auto;
 }
 
 .purchases-header {
@@ -37,7 +39,7 @@
 
 .single-purchase {
     width: 100%;
-    background: #C4C4C4;
+    background: rgba(46, 196, 182, 0.5);
     border-radius: 15px;
     display: flex;
     flex-direction: row;
@@ -58,6 +60,16 @@
     margin: auto 0rem;
 }
 
+.vertical-divide {
+    height: 80%;
+    border: 1px solid black;
+    margin: auto;
+}
+
 .location-name {
-    color: red;
+    margin-bottom: 0.2rem;
+}
+.location-name span{
+    font-weight: 400;
+    margin-left: 3rem;
 }

@@ -8,7 +8,7 @@ header {
 }
 
 #home-header {
-    background: white;
+    background: #F5C451;
 }
 
 header a {
@@ -16,76 +16,24 @@ header a {
 }
 
 nav {
-    position: absolute;
-    right: 0;
-    padding-right: 8rem;
+    font-size: 0.8rem;
+    margin-right: 2rem;
+    margin-top: -2rem;
 }
 
-@media screen and (min-width: 851px) {
-    .menu li {
-        display: inline-block;
-        font-weight: 600;
-        margin-left: 4rem;
-        cursor: pointer;
-    }
-    
-    .menu {
-        font-size: 1em;
-    }
-  }
-  
-  /* If the screen size is 850px wide or less */
-  @media screen and (max-width: 850px) {
-    .menu li {
-        list-style: none;
-        margin-right: 20px;
-    }
-    
-    nav {
-        padding-right: 0.5rem;
-    }
-  }
-
-  .menu a:hover,
-  .menu a:active,
-  .menu a.active {
-    color: #293241;
+.menu li {
+    display: inline-block;
+    font-weight: 600;
+    margin-left: 3rem;
+    cursor: pointer;
 }
 
 .logo{
     margin: 2rem 7rem;
 }
 
-.logo h1 {
-    font-weight: bold;
-    font-size: 64px;
-    line-height: 78px;
-    margin: 0;
-}
-
-.logo p {
-    margin: 0;
-}
-
 .logo img{
     width: 12rem;
-}
-
-.logout-btn {
-    border-radius: 6px;
-    width: auto;
-    font-size: 1rem;
-    font-weight: 800;
-    cursor: pointer;
-    padding: 0.7rem 1.5rem;
-    color: #3d5a80;
-    border: 1px solid #3d5a80;
-    margin-top: 2rem;
-}
-
-.logout-btn:hover {
-    color: #E0FBFC;
-    background: #3d5a80;
 }
 
 /* HOME NAV */
@@ -98,6 +46,64 @@ nav {
     padding: 0.2rem 1rem;
 }
 
-#current-time {
+.current-time {
     cursor: default;
+    margin: auto;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.current-time img {
+    width: 1.7rem;
+    margin-right: 0.5rem;
+}
+
+.current-time p {
+    font-size: 0.5rem;
+    letter-spacing: 0.1rem;
+}
+
+.current-location {
+    cursor: default;
+    margin: auto;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.current-location img {
+    height: 1.9rem;
+    margin-right: 0.5rem;
+    margin-bottom: -0.5rem;
+}
+
+.current-location p {
+    font-size: 0.5rem;
+    letter-spacing: 0.1rem;
+}
+
+.current-location span {
+    background: white;
+    color: black;
+    border-radius: 10px;
+    padding: 0.5rem 5rem 0.5rem 0.5rem;
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+.main-menu {
+    display: flex;
+    justify-content: center;
+    justify-content: space-around;
+    margin-top: 3rem;
+}
+
+.main-menu p{
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.profile-link,
+.social-link {
+    text-align: center;
 }
