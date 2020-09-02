@@ -1,6 +1,10 @@
 import React from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import './styles.css';
+import logo from './../../assets/logo-slogan.png';
+import time from './../../assets/clock.png';
+import profile from './../../assets/profile.png';
+import social from './../../assets/social.png';
 
 const HomeNav = () => {
     // const { currentUser } = useContext(AuthContext);
@@ -9,19 +13,36 @@ const HomeNav = () => {
     return (
         <header id='home-header'>
                 <div className='logo'>
-                <h1>Rumen</h1>
-                <p>Group food ordering made simple</p>
+                    <img src={logo} alt='Project logo'/>
                 </div>
-            <nav>
-                <ul className='menu'>
-                    <li id='current-time'>{currentTime}</li>
-                    <li id='home-nav-menu'><NavLink to='/location'>Harmony Trails Park</NavLink></li>
-                    <li><NavLink to='/account'>Account</NavLink></li>
-                    <li><NavLink to='/login'>Login</NavLink></li>
-                    <li><NavLink to='/signup'>Signup</NavLink></li>
-                    {/* {currentUser && <li><button className='logout-btn main-blue' onClick={()=>app.auth().signOut()}>Logout</button></li>} */}
-                </ul>
-            </nav>         
+                <div className='current-time'>
+                    <p>CURRENT TIME</p>
+                    <img src={time} alt='Time'/>
+                    {currentTime}
+                </div>
+                <nav>
+                    <ul className='menu'>
+                        {/* <li id='home-nav-menu'><NavLink to='/location'>Harmony Trails Park</NavLink></li> */}
+                        <li>Help</li>
+                        <li>Settings</li>
+                        <li>Logout</li>
+                        {/* {currentUser && <li><button className='logout-btn main-blue' onClick={()=>app.auth().signOut()}>Logout</button></li>} */}
+                    </ul>
+                    <div className='main-menu'>
+                        <div className='profile-link'>
+                        <NavLink to='/account'>
+                            <img src={profile} alt='Profile'/>
+                            <p>Profile</p>
+                        </NavLink>
+                        </div>
+                        <div className='social-link'>
+                        <NavLink to='/account/friends'>
+                            <img src={social} alt='Social'/>
+                            <p>Social</p>
+                        </NavLink>
+                        </div>
+                    </div>
+                </nav> 
         </header>
     )
 };

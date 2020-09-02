@@ -2,6 +2,7 @@ import React from 'react';
 // import { Link } from 'react-router-dom';
 import './styles.css';
 import userImg from './../../assets/paul.png';
+import lemon from './../../assets/lemon.png';
 
 const SideNav = () => {
     // const { currentUser } = useContext(AuthContext);
@@ -14,13 +15,16 @@ const SideNav = () => {
             </div>
             <div className='side-menu'>
                 <ul>
-                    <li>Search</li>
+                    <li>Profile</li>
                     <li>Refer A Friend</li>
                     <li>Purchases</li>
-                    <li>Settings</li>
-                    <li>Get Help</li>
                 </ul>
             </div>
+            <div className='help'>
+                <p>Need help? <br/> <span>Contact us</span></p>
+                <img src={lemon} alt='lemon'/>
+            </div>
+            
         </div>
     )
 };

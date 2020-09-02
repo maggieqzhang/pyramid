@@ -5,34 +5,63 @@
 
 /* LOGIN */
 
+.login-wrapper {
+    display: flex;
+    width: 70%;
+    margin: 15% auto 0 auto;
+    justify-content: space-evenly;
+}
+
+.intro {
+    width: 40%;
+    line-height: 1.7rem;
+}
+
+#pear {
+    width: 15rem;
+    transform: rotate(10deg);
+    position: absolute;
+    top: 0;
+    margin-top: 7rem;
+    z-index: -1;
+}
+
 .login {
-    margin: 4rem auto 10rem auto;
-    width: 30%;
+    width: 35%;
     display: flex;
     flex-direction: column;
-    background-color: white;
+    background: #FDFFFC;
     border-radius: 10px;
     padding: 2rem;
     align-items: center;
-    -webkit-box-shadow: 5px 4px 6px 4px rgba(0,0,0,0.15);
-    -moz-box-shadow: 5px 4px 6px 4px rgba(0,0,0,0.15);
-    box-shadow: 5px 4px 6px 4px rgba(0,0,0,0.15);
+    box-shadow: 1px 1px 4px 3px rgba(0,0,0,0.1);
 }
 
 .login-form {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    width: 70%;
+    width: 90%;
+}
+
+#login-divider {
+    border: 0.5px solid#9A9A9A;
+    width: 90%;
 }
 
 .login-form input {
     height: 1.8rem;
     border-radius: 5px;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     padding-left: 0.5rem;
     border: 1px solid rgba(61, 90, 128, 0.3);
     margin-top: 1rem;
+}
+
+.login-form p{
+    font-size: 0.8rem;
+    text-align: center;
+    color: #1663D7;
 }
 
 .login-form label {
@@ -41,17 +70,66 @@
 
 .login button {
     border-radius: 6px;
-    width: auto;
+    width: 100%;
     font-size: 1rem;
     font-weight: 800;
     cursor: pointer;
-    padding: 0.7rem 2.5rem;
+    padding: 0.5rem;
     color: #E0FBFC;
-    background: #443d80;
+    background: #2EC4B6;
     border: none;
-    margin-top: 3rem;
+    margin-top: 1.5rem;
 }
 
-.login button:hover {
-    background: rgba(78, 74, 116, 0.836);
+#create-new-btn {
+    background: #2EC47C;
+}
+
+footer {
+    background: #FF9F1C;
+    width: 100%;
+    height: 180px;
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.left-fruits {
+    margin-left: 1rem;
+    position: absolute;
+    bottom: 0;
+    margin-bottom: 1rem;
+}
+
+.right-fruit {
+    margin-right: 1rem;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin-bottom: 1rem;
+}
+
+#orange {
+    margin-left: -1rem;
+    transform: rotate(30deg);
+}
+
+footer img {
+    height: auto;
+}
+
+.footer-menu {
+    display: flex;
+    justify-content: space-between;
+    width: 30%;
+    margin: 120px auto 0 auto;
+    color: #1663D7;
+    vertical-align: bottom;
+}
+
+.footer-menu p {
+    cursor: pointer;
+    font-weight: 600;
 }

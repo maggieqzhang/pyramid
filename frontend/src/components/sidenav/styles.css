@@ -1,10 +1,9 @@
 .sidenav {
     width: 380px;
-    height: 100%;
     background: #F6BE4F;
     display: flex;
     flex-direction: column;
-    padding: 1.5rem;
+    min-height: 80vh;
 }
 
 .sidenav img {
@@ -19,6 +18,8 @@
     flex-direction: column;
     padding: 2rem;
     text-align: center;
+    background: #011627;
+    color: white;
 }
 
 .user-details h1, h2{
@@ -28,10 +29,10 @@
 .side-menu {
     display: flex;
     flex-direction: column;
-    background: #C4C4C4;
+    background: #011627;
+    color: white;
     border-radius: 15px;
-    width: 309px;
-    height: 380px;
+    padding: 0 3rem 0 2rem;
     margin: auto;
 }
 
@@ -39,8 +40,24 @@
     list-style: none;
     font-size: 1.3rem;
     font-weight: bold;
+    padding: 0;
+    line-height: 2.5rem;
 }
 
-.side-menu li{
-    margin-top: 1rem;
+.help{
+    margin-left: 1rem;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.help img {
+    width: 5.3rem;
+    height: 5rem;
+    margin-left: 5rem;
+    margin-bottom: 0;
+}
+
+.help span{
+    color: #1663D7;
 }
