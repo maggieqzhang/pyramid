@@ -24,7 +24,7 @@ const UserNav = () => {
                 <div className='current-location'>
                     <p>LOCATION</p>
                     <img src={location} alt='Location'/>
-                    <Link to='/'><span>Harmony Trails Park</span></Link>
+                    <Link to='/home'><span>Harmony Trails Park</span></Link>
                 </div>
                 <nav>
                     <ul className='menu'>

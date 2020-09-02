@@ -1,16 +1,21 @@
 .friends-list {
-    background: #C4C4C4;
+    background: #FDFFFC;
     border-radius: 15px;
     width: 30%;
     padding: 1rem 1rem;
 }
 
 .single-friend {
-    background: #B6B6B6;
+    background: #2EC4B6;
     border-radius: 15px;
     margin: 0.5rem auto;
     display: flex;
     padding: 0.7rem;
+    cursor: pointer;
+}
+
+.single-friend:hover {
+    background: rgba(46, 196, 181, 0.7);
 }
 
 .single-friend p{
@@ -40,7 +45,7 @@
 .what-friends-eat {
     display: flex;
     flex-direction: column;
-    background: #C4C4C4;
+    background: #FDFFFC;
     padding: 1rem 1rem;
     width: 55%;
     margin-left: 2rem;
@@ -48,11 +53,16 @@
 }
 
 .single-eating-wish {
-    background: #B6B6B6;
+    background: #E71D36;
     border-radius: 15px;
     width: 95%;
     margin: 0.5rem auto;
     display: flex;
     justify-content: space-evenly;
     padding: 0.7rem;
+    cursor: pointer;
+}
+
+.single-eating-wish:hover {
+    background: rgba(231, 29, 53, 0.7);
 }

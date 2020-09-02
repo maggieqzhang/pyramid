@@ -15,7 +15,7 @@ const Location = () => {
           <img src={location} alt='location'/>
           <input placeholder='Search'></input>
         </div>
-        <Link to='/account'>
+        <Link to='/pick-time'>
           <div className='location-option'>
               <p className='location-number'>1</p>
               <p className='location-result-name'>Harmony Trails Park</p>

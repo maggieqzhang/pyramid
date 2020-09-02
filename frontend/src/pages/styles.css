@@ -133,3 +133,8 @@ footer img {
     cursor: pointer;
     font-weight: 600;
 }
+
+.pick-time-wrapper {
+    margin-left: 1rem;
+    font-weight: 600;
+}

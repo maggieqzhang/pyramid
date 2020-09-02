@@ -60,4 +60,9 @@
 
 .help span{
     color: #1663D7;
+    cursor: pointer;
+}
+
+.help span:hover{
+    color: hsla(216, 81%, 46%, 0.7);
 }

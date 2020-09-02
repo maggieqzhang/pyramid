@@ -23,7 +23,7 @@ const SignUp = () => {
               <button type="submit">CREATE NEW ACCOUNT</button>
               <p>Already have an account?</p>
               <hr id='login-divider'/>
-              <NavLink to='/login'><button id='create-new-btn' type="submit">LOG IN</button></NavLink>
+              <NavLink to='/'><button id='create-new-btn' type="submit">LOG IN</button></NavLink>
             <p>Restaurant owner? Sign in</p>
             </form>
           </div>

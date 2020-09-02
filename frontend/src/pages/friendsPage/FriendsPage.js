@@ -1,9 +1,26 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './styles.css';
 import UserNav from '../../components/nav/UserNav';
 import SideNav from '../../components/sidenav/SideNav';
+import OrderForm from '../../components/orderForm/OrderForm';
+import useModal from '../../useModal';
 
 const FriendsPage = () => {
+  const [friends, setFriends] = useState([]);
+  const {isShowing, toggle} = useModal();
+
+  const url = `http://127.0.0.1:5000/friends`;
+    const fetchFriends = async () => {
+        const res = await fetch(url);
+        const loginJSON = await res.json();
+        setFriends(loginJSON);
+        console.log(res)
+    };
+
+    useEffect(() => {
+        fetchFriends()
+    }, []);
+
   return (
     <React.Fragment>
       <UserNav/>
@@ -42,7 +59,7 @@ const FriendsPage = () => {
               </div>
             </div>
             <div className='what-friends-eat'>
-              <div className='single-eating-wish'>
+              <div className='single-eating-wish' onClick={toggle}>
                 <p>1</p>
                 <p>Joshua O and 9 others want Chipotle</p>
                 <p>Location Time</p>
@@ -75,6 +92,7 @@ const FriendsPage = () => {
             </div>
           </div>
         </div>
+        <OrderForm isShowing={isShowing} hide={toggle}/>
       </div>
     </React.Fragment>
   );

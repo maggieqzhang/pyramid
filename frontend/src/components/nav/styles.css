@@ -90,6 +90,10 @@ nav {
     font-weight: 400;
 }
 
+.current-location span:hover {
+    box-shadow: 1px 1px 4px 3px rgba(0,0,0,0.2);
+}
+
 .main-menu {
     display: flex;
     justify-content: center;
@@ -106,4 +110,9 @@ nav {
 .profile-link,
 .social-link {
     text-align: center;
+}
+
+.profile-link:hover,
+.social-link:hover {
+    opacity: 0.7;
 }

@@ -47,6 +47,11 @@
     padding: 0.5rem 2rem;
     font-size: 1.5rem;
     justify-content: space-between;
+    cursor: pointer;
+}
+
+.location-option:hover {
+    background: hsla(174, 62%, 47%, 0.7);
 }
 
 .location-option p {

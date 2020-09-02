@@ -48,6 +48,11 @@
     padding: 0.3rem 1rem;
     margin-top: 0.5rem;
     vertical-align: middle;
+    cursor: pointer;
+}
+
+.single-purchase:hover {
+    background: rgba(46, 196, 182, 0.4);
 }
 
 .single-purchase span {
