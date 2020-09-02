@@ -6,12 +6,15 @@ from bson import json_util
 import bcrypt
 import dns
 import datetime
-
-
+from flask_cors import CORS, cross_origin
 app = Flask(__name__)
 app.secret_key = 'pyramid' # super secure XD
 app.config['MONGO_URI'] = 'mongodb+srv://pyramid:pyramid@openwater.chp4s.mongodb.net/pyramid?retryWrites=true&w=majority'
 mongo = PyMongo(app)
+
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
+
 
 
 def checkLoggedIn():
@@ -25,9 +28,11 @@ def checkLoggedIn():
             else:
                 return {"Error":"Please Login"}
         return inner
-    return check               
-          
+    return check  
+
+@cross_origin()         
 @app.route('/', methods = ['POST', 'GET'])
+
 def index(): #need to check if it's a restaurant or if it's a user who is trying to
     if request.method == 'POST':
         if 'type' not in session or session['type'] == 'user': #person just entered our website and wants to search w/out having logged in
@@ -173,23 +178,65 @@ def restaurantLogin():
     return 'Invalid username/password combination'
 
 #************************FEATURES API ENDPOINTS **************************************************************
+@app.route('/addtocart', methods=['GET'])
+@checkLoggedIn()
+def addtocart():
+    neworder=mongo.db.ordershistory.insert({
+        'customer':session['username'],
+        'pickuptime':request.form['pickup'],
+        'bill':request.form['bill'],
+        'restaurantId':request.form['restaurant'],
+        'foodItem':request.form['food'],
+        'status':'cart'
+    })
+
+    user=mongo.db.users.find_one({'username':session['username']})
+    user['cart'].push(neworder['_id'])
+    return json_util.dumps({'status':True})
+
+@app.route('/deletefromcart/<orderid>', methods=['GET'])
+@checkLoggedIn()
+def deletefromcart(orderid):
+    order=mongo.db.ordershistory.delete_one({'_id':orderid})
+    user=mongo.db.users.find_one({'username':session['username']})
+    user['cart'].pop(orderid)
+    return json_util.dumps({'status':True})    
+
+
+@app.route('/checkout', methods=['POST'])
+@checkLoggedIn()
+def checkout():
+    user=mongo.db.users.find_one({'username':session['username']})
+    cart=user['cart']
+    orderid=cart[0]
+    for i in range(len(cart)):
+        order=mongo.db.ordershistory.find_one({'_id':cart[i]})
+        user['orders'].push(cart[i])
+        order['status']="confirmed"
+        restaurant=mongo.db.restaurants.find_one({'_id':order['restaurantId']})
+        restaurant['orders'].push(order['id'])
+    cart=[]
+    return json_util.dumps({'status':True,'orderid':orderid})
+
+
+
 @app.route('/profile', methods=['GET'])
 @checkLoggedIn()
 def profile():
     user = mongo.db.users.find_one({'username' : session['username']})
+    print(user['_id'])
     user.pop('_id')
     user.pop('password')
     return json_util.dumps({'user':user})
 
 
-
-@app.route('/transactiondetails/<id>', methods=['GET'])
+@app.route('/orderdetails/<id>', methods=['GET'])
 @checkLoggedIn()
-def txdetails(id):
+def orderdetails(id):
     if(id):
-        # tx=mongo.db.transactions.find_one({'_id':id})
-        # print(tx)
-        return {'success':id}  
+        order=mongo.db.ordershistory.find_one({'_id':id})
+        print(order)
+        return json_util.dumps({'success':True,'error':None,'data':order})  
     else:
         return {'error':"error"}
 
